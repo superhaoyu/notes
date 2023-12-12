@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton.tsx";
 import { onError } from "../lib/errorLib.ts";
 import { useFormFields } from "../lib/hooksLib";
-
+import "./ForgetPassword.css"
 
 export default function ForgetPassword() {
 

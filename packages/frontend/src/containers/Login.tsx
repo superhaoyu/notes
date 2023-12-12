@@ -1,25 +1,21 @@
 import React, { useState } from "react";
+import { Auth } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
-import { Auth } from "aws-amplify";
-import { useAppContext } from "../lib/contextLib";
-import { useNavigate } from "react-router-dom";
-import LoaderButton from "../components/LoaderButton.tsx";
-import { onError } from "../lib/errorLib.ts";
+import { onError } from "../lib/errorLib";
 import { useFormFields } from "../lib/hooksLib";
+import { useAppContext } from "../lib/contextLib";
+import LoaderButton from "../components/LoaderButton.tsx";
+import "./Login.css";
 
 export default function Login() {
-
     const { userHasAuthenticated } = useAppContext();
 
     const [fields, handleFieldChange] = useFormFields({
         email: "",
         password: "",
     });
-
     const [isLoading, setIsLoading] = useState(false);
-
-    const nav = useNavigate();
 
     function validateForm() {
         return fields.email.length > 0 && fields.password.length > 0;
@@ -33,14 +29,10 @@ export default function Login() {
         try {
             await Auth.signIn(fields.email, fields.password);
             userHasAuthenticated(true);
-            nav("/");
         } catch (error) {
             onError(error);
             setIsLoading(false);
         }
-
-        setIsLoading(false);
-
     }
 
     return (
@@ -66,7 +58,12 @@ export default function Login() {
                             onChange={handleFieldChange}
                         />
                     </Form.Group>
-                    <LoaderButton size="lg" type="submit" isLoading={isLoading} disabled={!validateForm()}>
+                    <LoaderButton
+                        size="lg"
+                        type="submit"
+                        isLoading={isLoading}
+                        disabled={!validateForm()}
+                    >
                         Login
                     </LoaderButton>
                     <p className="forgot-password text-center">
